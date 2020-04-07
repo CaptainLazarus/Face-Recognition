@@ -21,6 +21,7 @@ if __name__ == "__main__":
     
     ipaths = list(paths.list_images(args["image"]))
 
+    print("[INFO] Detecting faces")
     for i in ipaths:
         #Pre processing
         image = cv2.imread(i)
@@ -28,7 +29,6 @@ if __name__ == "__main__":
         blob = cv2.dnn.blobFromImage(cv2.resize(image , (300,300)) , 1.0 , (300,300) , (104 , 177 , 123))
         
         #Detections
-        print("[INFO] Detecting faces")
         net.setInput(blob)
         detections = net.forward()
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
                 text = "{:.2f}%".format(confidence*100)
                 y = startY-10 if startY-10 > 10 else startY+10
                 cv2.putText(image , text , (startX,y) , cv2.FONT_HERSHEY_SIMPLEX , 0.45 , (0,0,255) , 2)
-                cv2.rectangle(image , (startX,startY) , (endX,endY) , (0,0,255) , 2)
-        print("{} : {}".format(i , text ) )
-        cv2.imshow("Output" , cv2.resize(image , (600,600) ))
+                cv2.rectangle(image , (startX,startY) , (endX,endY) , (0,0,255) , 20)
+                print("{} : {} at {} {} {} {}".format(i , text , startX , startY , endX , endY) )
+        cv2.imshow("Output" , cv2.resize(image , (400,400) ))
         cv2.waitKey(0)
